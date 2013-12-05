@@ -52,7 +52,7 @@ public:
     std::stringstream ss;
     if (!(ss<<arg && ss>>ret && ss.eof()))
       throw std::bad_cast();
-    
+
     return ret;
   }
 };
@@ -62,7 +62,7 @@ class lexical_cast_t<Target, Source, true>{
 public:
   static Target cast(const Source &arg){
     return arg;
-  }  
+  }
 };
 
 template <typename Source>
@@ -561,7 +561,7 @@ public:
       if (ordered[i]->must())
         oss<<ordered[i]->short_description()<<" ";
     }
-    
+
     oss<<"[options] ... "<<ftr<<std::endl;
     oss<<"options:"<<std::endl;
 
