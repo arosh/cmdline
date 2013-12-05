@@ -136,7 +136,7 @@ inline std::string readable_typename<std::string>()
 
 class cmdline_error : public std::exception {
 public:
-  explicit cmdline_error(const std::string &msg): msg(msg){}
+  explicit cmdline_error(const std::string &msg_): msg(msg_){}
   ~cmdline_error() throw() {}
   const char *what() const throw() { return msg.c_str(); }
 private:
@@ -152,7 +152,7 @@ struct default_reader{
 
 template <class T>
 struct range_reader{
-  range_reader(const T &low, const T &high): low(low), high(high) {}
+  range_reader(const T &low_, const T &high_): low(low_), high(high_) {}
   T operator()(const std::string &s) const {
     T ret=default_reader<T>()(s);
     if (!(ret>=low && ret<=high)) throw cmdline::cmdline_error("range_error");
@@ -642,8 +642,8 @@ private:
   public:
     option_without_value(const std::string &name,
                          char short_name,
-                         const std::string &desc)
-      :nam(name), snam(short_name), desc(desc), has(false){
+                         const std::string &desc_)
+      :nam(name), snam(short_name), desc(desc_), has(false){
     }
     ~option_without_value(){}
 
@@ -698,12 +698,12 @@ private:
   public:
     option_with_value(const std::string &name,
                       char short_name,
-                      bool need,
-                      const T &def,
-                      const std::string &desc)
-      : nam(name), snam(short_name), need(need), has(false)
-      , def(def), actual(def) {
-      this->desc=full_description(desc);
+                      bool need_,
+                      const T &def_,
+                      const std::string &desc_)
+      : nam(name), snam(short_name), need(need_), has(false)
+      , def(def_), actual(def_) {
+      this->desc=full_description(desc_);
     }
     ~option_with_value(){}
 
@@ -758,9 +758,9 @@ private:
     }
 
   protected:
-    std::string full_description(const std::string &desc){
+    std::string full_description(const std::string &desc_){
       return
-        desc+" ("+detail::readable_typename<T>()+
+        desc_+" ("+detail::readable_typename<T>()+
         (need?"":" [="+detail::default_value<T>(def)+"]")
         +")";
     }
@@ -785,8 +785,8 @@ private:
                                   bool need,
                                   const T def,
                                   const std::string &desc,
-                                  F reader)
-      : option_with_value<T>(name, short_name, need, def, desc), reader(reader){
+                                  F reader_)
+      : option_with_value<T>(name, short_name, need, def, desc), reader(reader_){
     }
 
   private:
